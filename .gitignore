@@ -1,0 +1,9 @@
+venv/
+BarberBooking/BarberBooking/__pycache__/
+BarberBooking/.env
+BarberBooking/appointments/__pycache__/
+BarberBooking/appointments/migrations/
+BarberBooking/barbers/__pycache__/
+BarberBooking/barbers/migrations/
+BarberBooking/customers/__pycache__/
+BarberBooking/customers/migrations/
