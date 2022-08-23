@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'BarberBooking.wsgi.application'
 DATABASES = {
     'default': {
 'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'da5igo5g2ldmun',
-        'USER': 'gmpchpdcutegee',
-        'PASSWORD': '8533f1498ca34e29c818c685b3426f976bacb396b8b8fa0ac44db797a98f6145',
-        'HOST': 'ec2-18-208-55-135.compute-1.amazonaws.com',
+        'NAME': 'dhv4luo5sucjj',
+        'USER': 'cyvdkfethwmbvc',
+        'PASSWORD': 'b76834d548f9407fc00524bb21ba28a0459228d530058aa782f58a347c866dea',
+        'HOST': 'ec2-44-193-178-122.compute-1.amazonaws.com',
         'PORT':'5432'
     }
 }
@@ -128,9 +128,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+# STATIC_URL = 'static/'
+# STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+# STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 django_heroku.settings(locals())
 
 # Default primary key field type
