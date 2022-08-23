@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'BarberBooking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'da5igo5g2ldmun',
-        'USER': 'gmpchpdcutegee',
-        'PASSWORD': '8533f1498ca34e29c818c685b3426f976bacb396b8b8fa0ac44db797a98f6145',
-        'HOST': 'ec2-18-208-55-135.compute-1.amazonaws.com',
+        'NAME': 'BarberBookingDjango',
+        'USER': 'postgres',
+        'PASSWORD': 'JULOH',
+        'HOST': '127.0.0.1',
         'PORT':'5432'
     }
 }
@@ -130,8 +130,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'))
-django_heroku.settings(locals)
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
