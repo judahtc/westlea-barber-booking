@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'BarberBooking.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'BarberBookingDjango',
-        'USER': 'postgres',
-        'PASSWORD': 'JULOH',
-        'HOST': '127.0.0.1',
+'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'da5igo5g2ldmun',
+        'USER': 'gmpchpdcutegee',
+        'PASSWORD': '8533f1498ca34e29c818c685b3426f976bacb396b8b8fa0ac44db797a98f6145',
+        'HOST': 'ec2-18-208-55-135.compute-1.amazonaws.com',
         'PORT':'5432'
     }
 }
