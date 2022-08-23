@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +28,7 @@ SECRET_KEY = 'django-insecure-*x@vo(5#r^ic4b3ptg(!%*0a)$cqfn$vl)d2p5y5ou77ypuvf^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,10 +85,10 @@ WSGI_APPLICATION = 'BarberBooking.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'BarberBookingDjango',
-        'USER': 'postgres',
-        'PASSWORD': 'JULOH',
-        'HOST': '127.0.0.1',
+        'NAME': 'da5igo5g2ldmun',
+        'USER': 'gmpchpdcutegee',
+        'PASSWORD': '8533f1498ca34e29c818c685b3426f976bacb396b8b8fa0ac44db797a98f6145',
+        'HOST': 'ec2-18-208-55-135.compute-1.amazonaws.com',
         'PORT':'5432'
     }
 }
@@ -126,6 +129,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'))
+django_heroku.settings(locals)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
