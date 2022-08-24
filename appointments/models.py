@@ -1,7 +1,7 @@
 from django.db import models
 
 from customers.models import customer
-from barbers.models import barber
+from barbers.models import Barber
 
 
 # Create your models here.
@@ -13,7 +13,7 @@ class appointments(models.Model):
     appointDate=models.CharField(max_length=250)
     appointTime=models.CharField(max_length=250)
     amount=models.CharField(max_length=250)
-    barberId=models.ForeignKey(barber,on_delete=models.CASCADE)
+    barberId=models.ForeignKey(Barber,on_delete=models.CASCADE)
     custId=models.ForeignKey(customer,on_delete=models.CASCADE)
     class Meta:
         db_table='appointments'

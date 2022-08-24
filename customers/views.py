@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt #2
 from rest_framework.parsers import DataAndFiles, JSONParser #3
 from rest_framework.response import Response
 from appointments import serializers
-from barbers.models import barber
+from barbers.models import Barber
 from customers.models import customer
 from customers.serializers import CustomerSerializer
 from appointments.serializers import AppointmentsSerializer
@@ -170,7 +170,7 @@ class AppointmentsView(APIView):
             serializer.save()
             return Response("Saved")
         else:
-            return Response("Timeslot or barber booked")    
+            return Response("Timeslot or Barber booked")    
 
 class barberCheckView(APIView):
 
@@ -185,12 +185,12 @@ class barberCheckView(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("session expired")
 
-        freebarber=barber.objects.raw('Select Distinct(a."barberId"),a."username" from barber a join appointments b on a."barberId"=b."barberId_id" where b."appointDate" =%s AND b."appointTime" =%s',[date,time])
+        freebarber=Barber.objects.raw('Select Distinct(a."barberId"),a."username" from Barber a join appointments b on a."barberId"=b."barberId_id" where b."appointDate" =%s AND b."appointTime" =%s',[date,time])
         serializer=BarberSerializer1(freebarber,many=True)
         return Response(serializer.data)
 
 class BarbersView(APIView):
     def get(self,request):
-        barbers=barber.objects.all()
+        barbers=Barber.objects.all()
         serializer=BarberSerializer(barbers,many=True)
         return Response(serializer.data)

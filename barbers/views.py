@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse, request #1
 from django.views.decorators.csrf import csrf_exempt #2
 from rest_framework.parsers import DataAndFiles, JSONParser #3
 from rest_framework.response import Response
-from barbers.models import barber
+from barbers.models import Barber
 from barbers.serializers import BarberSerializer
 import jwt,datetime
 from rest_framework.exceptions import AuthenticationFailed
@@ -26,7 +26,7 @@ class LoginView(APIView):
         email =request.data['email']
         password =request.data['password']
         
-        user=barber.objects.filter(email=email).first()
+        user=Barber.objects.filter(email=email).first()
         
       
         if user is None:
@@ -68,7 +68,7 @@ class BarberView(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed("session expired")
 
-        user=barber.objects.get(barberId=payload['id'])
+        user=Barber.objects.get(barberId=payload['id'])
         
         serializer=BarberSerializer(user)
         return Response(serializer.data)
@@ -94,11 +94,11 @@ class OneBarberView(APIView):
                 except jwt.ExpiredSignatureError:
                     raise AuthenticationFailed("session expired")
 
-                user=barber.objects.get(barberId=payload['id'])
+                user=Barber.objects.get(barberId=payload['id'])
                 
                 return user
 
-            except barber.DoesNotExist:
+            except Barber.DoesNotExist:
                 return Response("wakadhakwa",status=status.HTTP_204_NO_CONTENT)
      
     

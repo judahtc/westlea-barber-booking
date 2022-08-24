@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse, request #1
 from django.views.decorators.csrf import csrf_exempt #2
 from rest_framework.parsers import DataAndFiles, JSONParser #3
 from rest_framework.response import Response
-from barbers.models import barber
+from barbers.models import Barber
 from customers.models import customer
 from customers.serializers import CustomerSerializer
 from appointments.models import appointments
@@ -85,7 +85,7 @@ class AppointmentsView(APIView):
                 serializer.save()
                 return Response("Appointment successfully saved")
             else:
-                return Response("the barber is currently booked at that timeslot, kindly try a different barber or timeslot")
+                return Response("the Barber is currently booked at that timeslot, kindly try a different Barber or timeslot")
             
 class AllAppointsView(APIView):
     def get(self,request):
