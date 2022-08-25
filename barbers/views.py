@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import response
 from django.http import HttpResponse, JsonResponse, request  # 1
 from django.views.decorators.csrf import csrf_exempt  # 2
@@ -48,17 +48,40 @@ class LoginView(APIView):
         return response
 
 
-class BarberView(APIView):
+class BarbersView(APIView):
     def get(self, request):
         barbers = models.Barber.objects.all()
-        barber_serializer = serializers.BarberSerializer(barbers, many=True)
-        return Response(barber_serializer.data, status=status.HTTP_200_OK)
+        serializer = serializers.BarberSerializer(barbers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = serializers.BarberSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class BarberView(APIView):
+    def get(self, request, id):
+        barber = get_object_or_404(models.Barber, national_id=id)
+        serializer = serializers.BarberSerializer(barber)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, id):
+        barber = get_object_or_404(models.Barber, national_id=id)
+        serializer = serializers.BarberSerializer(barber, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK) 
+
+    def delete(self, request, id):
+        barber = get_object_or_404(models.Barber, national_id=id)
+        barber.delete()
+        return Response({"message": "deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+    # def patch(self, request, id):
+    #     serializer = serializers.BarberSerializer(data=request.data)
+    #     barber = get_object_or_404(models.Barber, national_id=id)
 
     # def get(self, request):
     #     token = request.COOKIES.get('jwt')
