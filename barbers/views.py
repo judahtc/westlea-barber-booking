@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import models, authenticate, login
+from django.contrib.auth.models import User
 from rest_framework import response
 from django.http import HttpResponse, JsonResponse, request  # 1
 from django.views.decorators.csrf import csrf_exempt  # 2
@@ -17,20 +19,28 @@ from . import serializers
 
 
 class LoginView(APIView):
+    def get(self, request):
+        return Response({"message":"its working!"})
 
     def post(self, request):
-        email = request.data['email']
+        username = request.data['username']
+        password = request.data['password']
+        return Response({"Username": username, "Password": password})
+
+    def post_(self, request):
+        username = request.data['username']
         password = request.data['password']
 
-        user = models.Barber.objects.filter(email=email).first()
+        if username is None or password is None:
+            raise AuthenticationFailed("Username or Password cannot be empty!")
 
-        data = request.data
+        user = authenticate(request, username=username, password=password)
+        print("user", user)
 
-        if user is None:
-            raise AuthenticationFailed('User not found!')
+        if not user:
+            raise AuthenticationFailed("Username or Password invalid!")
 
-        if user.password != password:
-            raise AuthenticationFailed("incorrect password")
+        login(user=user)
 
         payload = {
             'id': user.barberId,
@@ -54,10 +64,29 @@ class BarbersView(APIView):
         serializer = serializers.BarberSerializer(barbers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def validate_password(self, password, confirm_password):
+        if password != confirm_password:
+            raise Exception("Passwords does not match!")
+        return password
+
     def post(self, request):
         serializer = serializers.BarberSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        # create user profile for the barber. 
+        # Todo: Most probably not the best way
+        username = serializer.validated_data.get('email_address')
+        if (User.objects.filter(username=username).exists()):
+            raise Exception("Username already exists!")
+        
+        data = request.data
+        password = self.validate_password(data.get('password'), data.get('confirm_password'))
+        user = User.objects.create(username=username)
+        user.set_password(password)
+
+        # saving both barber and user account.
         serializer.save()
+        user.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -79,9 +108,12 @@ class BarberView(APIView):
         barber.delete()
         return Response({"message": "deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
-    # def patch(self, request, id):
-    #     serializer = serializers.BarberSerializer(data=request.data)
-    #     barber = get_object_or_404(models.Barber, national_id=id)
+    def patch(self, request, id):
+        barber = get_object_or_404(models.Barber, national_id=id)
+        serializer = serializers.BarberSerializer(barber, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     # def get(self, request):
     #     token = request.COOKIES.get('jwt')
@@ -99,14 +131,7 @@ class BarberView(APIView):
     #     serializer = BarberSerializer(user)
     #     return Response(serializer.data)
 
-    # def post(self, request):
-    #     barber_serializer = serializers.BarberSerializer(data=request.data)
-    #     if barber_serializer.is_valid():
-    #         barber_serializer.save()
-    #         return Response(barber_serializer.data)
-    #     else:
-    #         return Response(barber_serializer.error_messages)
-
+    
 
 class OneBarberView(APIView):
     def get_object(self, request):
