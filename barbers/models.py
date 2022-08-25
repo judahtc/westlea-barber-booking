@@ -6,7 +6,7 @@ class Barber(models.Model):
     class Meta:
         db_table = 'barber'
         
-    national_id = models.CharField(max_length=50)
+    national_id = models.CharField(max_length=50, primary_key=True)
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
     gender = models.CharField(max_length=250)
