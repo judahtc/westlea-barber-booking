@@ -54,7 +54,12 @@ class BarberView(APIView):
         barber_serializer = serializers.BarberSerializer(barbers, many=True)
         return Response(barber_serializer.data, status=status.HTTP_200_OK)
 
-    
+    def post(self, request):
+        serializer = serializers.BarberSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     # def get(self, request):
     #     token = request.COOKIES.get('jwt')
 
